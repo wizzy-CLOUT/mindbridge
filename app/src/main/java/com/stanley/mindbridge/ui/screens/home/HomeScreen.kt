@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.stanley.mindbridge.R
+import com.stanley.mindbridge.navigation.ROUT_APPOINTMENT
+import com.stanley.mindbridge.navigation.ROUT_JOURNAL
 import com.stanley.mindbridge.ui.theme.newpurple
 
 @Composable
@@ -97,10 +100,18 @@ fun HomeScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    HomeActionButton("Mind Reset", Icons.Default.Refresh)
-                    HomeActionButton("Journaling", Icons.Default.Edit)
-                    HomeActionButton("Mood Tracker", Icons.Default.Face)
-                    HomeActionButton("Contact Support", Icons.AutoMirrored.Filled.Send)
+                    HomeActionButton("Mind Reset", Icons.Default.Refresh) {
+                        navController.navigate("reset") // <-- Replace with your actual route
+                    }
+                    HomeActionButton("Journaling", Icons.Default.Edit) {
+                        navController.navigate ("journal") // <-- Replace with your actual route
+                    }
+                    HomeActionButton("Mood Tracker", Icons.Default.Face) {
+                        navController.navigate("tracker") // <-- Replace with your actual route
+                    }
+                    HomeActionButton("Make Appointment", Icons.AutoMirrored.Filled.Send) {
+                        navController.navigate(ROUT_APPOINTMENT) // <-- Replace with your actual route
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp)) // Extra spacing at bottom
@@ -110,7 +121,7 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun HomeActionButton(text: String, icon: androidx.compose.ui.graphics.vector.ImageVector) {
+fun HomeActionButton(text: String, icon: ImageVector, function: () -> Unit) {
     Button(
         onClick = { /* TODO: Add navigation logic */ },
         modifier = Modifier
@@ -128,6 +139,8 @@ fun HomeActionButton(text: String, icon: androidx.compose.ui.graphics.vector.Ima
             fontSize = 16.sp
         )
     }
+
+
 }
 
 @Preview(showBackground = true)

@@ -1,6 +1,7 @@
 package com.stanley.mindbridge.navigation
 
 
+import LoginScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -8,13 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.Stanley.sokomart.ui.screens.auth.LoginScreen
 import com.example.mentalhealthapp.ui.BreathingExerciseScreen
 import com.stanley.mindbridge.data.ContactDatabase
 import com.stanley.mindbridge.data.UserDatabase
 import com.stanley.mindbridge.repository.ContactRepository
 import com.stanley.mindbridge.repository.UserRepository
 import com.stanley.mindbridge.ui.screens.about.AboutScreen
+import com.stanley.mindbridge.ui.screens.about.AdminDashboardScreen
 import com.stanley.mindbridge.ui.screens.about.HomeScreen
 import com.stanley.mindbridge.ui.screens.auth.RegisterScreen
 import com.stanley.mindbridge.ui.screens.journal.JournalScreen
@@ -54,6 +55,9 @@ fun AppNavHost(
         }
         composable(ROUT_SPLASH) {
             SplashScreen(navController)
+        }
+        composable(ROUT_ADMINDASHBOARD) {
+            AdminDashboardScreen(navController)
         }
         composable(ROUT_TRACKER) {
             MoodTrackerScreen(navController)
