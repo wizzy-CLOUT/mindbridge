@@ -14,17 +14,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.stanley.mindbridge.model.Contact
+import com.stanley.mindbridge.model.Journal
 import com.stanley.mindbridge.navigation.ROUT_HOME
-import com.stanley.mindbridge.viewmodel.ContactViewModel
+import com.stanley.mindbridge.viewmodel.JournalViewModel
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UploadAppointmentScreen(
+fun UploadJournalScreen(
     navController: NavController,
-    contentViewModel: ContactViewModel,
-    editingContentId: Int? = null
+    JournalViewModel: JournalViewModel,
+    editingJournalId: Int? = null
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
@@ -32,7 +32,7 @@ fun UploadAppointmentScreen(
         containerColor = Color(0xFFF5F5F5),
         topBar = {
             TopAppBar(
-                title = { Text("Make Appointment") },
+                title = { Text("Upload Content") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = ROUT_HOME)
@@ -59,18 +59,18 @@ fun UploadAppointmentScreen(
                         }
                     }
                 )
-              //  NavigationBarItem(
-               //     icon = { Icon(Icons.Default.Favorite, contentDescription = "Review") },
-                //    label = { Text("Review") },
-                 //   selected = selectedIndex == 1,
-                //    onClick = {
-                 //       selectedIndex = 1
-                  //      navController.navigate("favorites") {
-                 //           popUpTo("home") { inclusive = false }
-                  //          launchSingleTop = true
-                   //     }
-                 //   }
-               // )
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Review") },
+                    label = { Text("Review") },
+                    selected = selectedIndex == 1,
+                    onClick = {
+                        selectedIndex = 1
+                        navController.navigate("favorites") {
+                            popUpTo("home") { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }
+                )
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text("Profile") },
@@ -85,15 +85,15 @@ fun UploadAppointmentScreen(
                 )
             }
         },
-       // floatingActionButton = {
-         //   FloatingActionButton(
-         //       onClick = { /* Add action */ },
-         //       containerColor = Color(0xFF4CAF50),
-         //       contentColor = Color.White
-        //    ) {
-        //        Icon(Icons.Default.Add, contentDescription = "Add")
-        //    }
-      //  },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { /* Add action */ },
+                containerColor = Color(0xFF4CAF50),
+                contentColor = Color.White
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+        },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -106,19 +106,18 @@ fun UploadAppointmentScreen(
                 var message by remember { mutableStateOf("") }
                 var appointmentDate by remember { mutableStateOf("") }
 
-                LaunchedEffect(editingContentId) {
-                    if (editingContentId != null) {
-                        contentViewModel.loadContactById(editingContentId)
+                LaunchedEffect(editingJournalId) {
+                    if (editingJournalId != null) {
+                        JournalViewModel.loadJournalById(editingJournalId)
                     }
                 }
 
-                val editingContent = contentViewModel.selectedContact.collectAsState().value
+                val editingJournal = JournalViewModel.selectedJournal.collectAsState().value
 
-                LaunchedEffect(editingContent) {
-                    editingContent?.let {
-                        subject = it.subject
+                LaunchedEffect(editingJournal) {
+                    editingJournal?.let {
                         message = it.message
-                        appointmentDate = it.appointmentDate
+
                     }
                 }
 
@@ -215,16 +214,14 @@ fun UploadAppointmentScreen(
 
                         Button(
                             onClick = {
-                                val contact = Contact(
-                                    id = editingContent?.id ?: 0,
-                                    subject = subject,
+                                val journal = Journal(
+                                    id = editingJournal?.id ?: 0,
                                     message = message,
-                                    appointmentDate = appointmentDate,
-                                )
-                                if (editingContent != null) {
-                                    contentViewModel.update(contact)
+                                    )
+                                if (editingJournal != null) {
+                                    JournalViewModel.update(journal)
                                 } else {
-                                    contentViewModel.insert(contact)
+                                    JournalViewModel.insert(journal)
                                 }
                                 navController.popBackStack()
                             },
@@ -235,7 +232,7 @@ fun UploadAppointmentScreen(
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
                         ) {
                             Text(
-                                if (editingContent != null) "Update Content" else "Upload Content",
+                                if (editingJournal != null) "Update Content" else "Upload Content",
                                 color = Color.White
                             )
                         }

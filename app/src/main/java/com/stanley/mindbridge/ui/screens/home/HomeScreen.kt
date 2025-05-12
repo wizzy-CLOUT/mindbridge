@@ -25,7 +25,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.stanley.mindbridge.R
 import com.stanley.mindbridge.navigation.ROUT_APPOINTMENT
+import com.stanley.mindbridge.navigation.ROUT_BREATHINGEXERCISESCREEN
 import com.stanley.mindbridge.navigation.ROUT_JOURNAL
+import com.stanley.mindbridge.navigation.ROUT_TRACKER
 import com.stanley.mindbridge.ui.theme.newpurple
 
 @Composable
@@ -41,7 +43,7 @@ fun HomeScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState()) // enables scrolling
+                    .verticalScroll(rememberScrollState())
                     .padding(24.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -64,7 +66,7 @@ fun HomeScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Image(
-                    painter = painterResource(id = R.drawable.img_1), // Replace with your image
+                    painter = painterResource(id = R.drawable.img_1),
                     contentDescription = "Calm illustration",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -99,31 +101,36 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(32.dp))
 
+                // ✅ Buttons now navigate
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     HomeActionButton("Mind Reset", Icons.Default.Refresh) {
-                        navController.navigate("reset") // <-- Replace with your actual route
+                        navController.navigate(ROUT_BREATHINGEXERCISESCREEN) // <-- Replace with your actual route
                     }
                     HomeActionButton("Journaling", Icons.Default.Edit) {
-                        navController.navigate ("journal") // <-- Replace with your actual route
+                        navController.navigate(ROUT_JOURNAL) // <-- Replace with your actual route
                     }
                     HomeActionButton("Mood Tracker", Icons.Default.Face) {
-                        navController.navigate("tracker") // <-- Replace with your actual route
+                        navController.navigate(ROUT_TRACKER) // <-- Replace with your actual route
                     }
-                    HomeActionButton("Make Appointment", Icons.AutoMirrored.Filled.Send) {
+                    HomeActionButton("Contact Support", Icons.AutoMirrored.Filled.Send) {
                         navController.navigate(ROUT_APPOINTMENT) // <-- Replace with your actual route
                     }
                 }
 
-                Spacer(modifier = Modifier.height(16.dp)) // Extra spacing at bottom
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
 }
 
 @Composable
-fun HomeActionButton(text: String, icon: ImageVector, function: () -> Unit) {
+fun HomeActionButton(
+    text: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onClick: () -> Unit // ✅ Add click handler
+) {
     Button(
-        onClick = { /* TODO: Add navigation logic */ },
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
@@ -139,8 +146,6 @@ fun HomeActionButton(text: String, icon: ImageVector, function: () -> Unit) {
             fontSize = 16.sp
         )
     }
-
-
 }
 
 @Preview(showBackground = true)

@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 class ContactViewModel(private val repository: ContactRepository) : ViewModel() {
     val allContact = repository.allContact
 
-    private val _selectedContent = MutableStateFlow<Contact?>(null)
-    val selectedContact: StateFlow<Contact?> = _selectedContent.asStateFlow()
+    private val _selectedContact = MutableStateFlow<Contact?>(null)
+    val selectedContact: StateFlow<Contact?> = _selectedContact.asStateFlow()
 
     fun insert(contact: Contact) = viewModelScope.launch {
         repository.insert(contact)
@@ -29,6 +29,6 @@ class ContactViewModel(private val repository: ContactRepository) : ViewModel() 
     }
 
     fun loadContactById(id: Int) = viewModelScope.launch {
-        _selectedContent.value = repository.getById(id)
+        _selectedContact.value = repository.getById(id)
     }
 }

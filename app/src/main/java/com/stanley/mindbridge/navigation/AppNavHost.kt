@@ -11,27 +11,32 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mentalhealthapp.ui.BreathingExerciseScreen
 import com.stanley.mindbridge.data.ContactDatabase
+import com.stanley.mindbridge.data.JournalDatabase
 import com.stanley.mindbridge.data.UserDatabase
+import com.stanley.mindbridge.model.Journal
 import com.stanley.mindbridge.repository.ContactRepository
+import com.stanley.mindbridge.repository.JournalRepository
 import com.stanley.mindbridge.repository.UserRepository
 import com.stanley.mindbridge.ui.screens.about.AboutScreen
 import com.stanley.mindbridge.ui.screens.about.AdminDashboardScreen
 import com.stanley.mindbridge.ui.screens.about.HomeScreen
 import com.stanley.mindbridge.ui.screens.auth.RegisterScreen
-import com.stanley.mindbridge.ui.screens.journal.JournalScreen
+import com.stanley.mindbridge.ui.screens.journal.ViewJournalScreen
 import com.stanley.mindbridge.ui.screens.splash.SplashScreen
 import com.stanley.mindbridge.ui.screens.start.StartScreen
 import com.stanley.mindbridge.ui.screens.tracker.MoodTrackerScreen
 import com.stanley.mindbridge.ui.theme.screens.content.UploadAppointmentScreen
+import com.stanley.mindbridge.ui.theme.screens.content.UploadJournalScreen
 import com.stanley.mindbridge.ui.theme.screens.content.ViewContentScreen
 import com.stanley.mindbridge.viewmodel.AuthViewModel
 import com.stanley.mindbridge.viewmodel.ContactViewModel
+import com.stanley.mindbridge.viewmodel.JournalViewModel
 
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = ROUT_APPOINTMENT
+    startDestination: String = ROUT_JOURNAL
 ) {
     val context = LocalContext.current
 
@@ -49,9 +54,6 @@ fun AppNavHost(
         }
         composable(ROUT_START) {
             StartScreen(navController)
-        }
-        composable(ROUT_JOURNAL) {
-            JournalScreen(navController)
         }
         composable(ROUT_SPLASH) {
             SplashScreen(navController)
@@ -81,6 +83,25 @@ fun AppNavHost(
                 navController.navigate("upload_content?id=$id")
             }
         }
+
+        //CONTENT
+
+        // Initialize Content Database and ViewModel
+        val journalDatabase = JournalDatabase.getDatabase(context)
+        val journalRepository = JournalRepository(journalDatabase.JournalDao())
+        val journalViewModel = JournalViewModel(journalRepository)
+
+        composable(ROUT_JOURNAL) {
+            UploadJournalScreen(navController, journalViewModel)
+        }
+        composable(ROUT_JOURNALVIEW) {
+            ViewJournalScreen(navController, journalViewModel) { id ->
+                navController.navigate("upload_task?id=$id")
+            }
+
+        }
+
+
 
 
         //AUTHENTICATION
