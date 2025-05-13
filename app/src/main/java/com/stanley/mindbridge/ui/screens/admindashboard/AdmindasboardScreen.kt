@@ -3,11 +3,14 @@ package com.stanley.mindbridge.ui.screens.about
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.stanley.mindbridge.navigation.ROUT_APPOINTMENTBACK
+import com.stanley.mindbridge.navigation.ROUT_JOURNALVIEW
+import com.stanley.mindbridge.navigation.ROUT_LOGIN
+import com.stanley.mindbridge.navigation.ROUT_START
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +30,22 @@ fun AdminDashboardScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("MentalApp Admin Dashboard") }
+                title = { Text("Admin Dashboard") },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigate(ROUT_LOGIN) {
+                            popUpTo("target_screen_route") { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.LightGray,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
             )
         }
     ) { padding ->
@@ -54,11 +75,40 @@ fun AdminDashboardScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
 
             // Navigation Card
-            NavigationCard(
-                title = "Appointments Made",
-                description = "",
-                onClick = { navController.navigate(ROUT_APPOINTMENTBACK) } // <-- Replace with your actual route
-            )
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                ),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    NavigationCard(
+                        title = "Appointments Made",
+                        description = "",
+                        onClick = { navController.navigate(ROUT_APPOINTMENTBACK) }
+                    )
+
+                    Spacer(modifier = Modifier.width(24.dp))
+
+                    NavigationCard(
+                        title = "JOURNALS",
+                        description = "",
+                        onClick = { navController.navigate(ROUT_JOURNALVIEW) }
+                    )
+                }
+            }
+
+
 
             Spacer(modifier = Modifier.height(24.dp))
 

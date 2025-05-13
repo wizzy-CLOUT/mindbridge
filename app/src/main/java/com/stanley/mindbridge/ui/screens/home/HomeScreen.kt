@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Refresh
@@ -27,14 +28,20 @@ import com.stanley.mindbridge.R
 import com.stanley.mindbridge.navigation.ROUT_APPOINTMENT
 import com.stanley.mindbridge.navigation.ROUT_BREATHINGEXERCISESCREEN
 import com.stanley.mindbridge.navigation.ROUT_JOURNAL
+import com.stanley.mindbridge.navigation.ROUT_JOURNALVIEW
+import com.stanley.mindbridge.navigation.ROUT_LOGIN
 import com.stanley.mindbridge.navigation.ROUT_TRACKER
 import com.stanley.mindbridge.ui.theme.newpurple
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     Scaffold(
         containerColor = newpurple
-    ) { padding ->
+
+    ) {
+
+        padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -104,16 +111,19 @@ fun HomeScreen(navController: NavController) {
                 // ✅ Buttons now navigate
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     HomeActionButton("Mind Reset", Icons.Default.Refresh) {
-                        navController.navigate(ROUT_BREATHINGEXERCISESCREEN) // <-- Replace with your actual route
-                    }
+                       navController.navigate(ROUT_BREATHINGEXERCISESCREEN) // <-- Replace with your actual route
+                }
                     HomeActionButton("Journaling", Icons.Default.Edit) {
                         navController.navigate(ROUT_JOURNAL) // <-- Replace with your actual route
                     }
                     HomeActionButton("Mood Tracker", Icons.Default.Face) {
                         navController.navigate(ROUT_TRACKER) // <-- Replace with your actual route
                     }
-                    HomeActionButton("Contact Support", Icons.AutoMirrored.Filled.Send) {
+                    HomeActionButton("Make Appointment", Icons.AutoMirrored.Filled.Send) {
                         navController.navigate(ROUT_APPOINTMENT) // <-- Replace with your actual route
+                    }
+                    HomeActionButton("Past Journals", Icons.Default.Refresh) {
+                        navController.navigate(ROUT_JOURNALVIEW) // <-- Replace with your actual route
                     }
                 }
 

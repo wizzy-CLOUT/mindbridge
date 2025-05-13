@@ -16,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.stanley.mindbridge.R
+import com.stanley.mindbridge.navigation.ROUT_HOME
+import com.stanley.mindbridge.navigation.ROUT_JOURNAL
 import com.stanley.mindbridge.viewmodel.JournalViewModel
 
 import kotlinx.coroutines.delay
@@ -32,20 +34,20 @@ fun ViewJournalScreen(
 
 
     // Auto-slide carousel logic
-    val carouselImages = listOf(R.drawable.img, R.drawable.img_2, R.drawable.img_1)
-    var currentImageIndex by remember { mutableStateOf(0) }
+    //val carouselImages = listOf(R.drawable.img, R.drawable.img_2, R.drawable.img_1)
+   // var currentImageIndex by remember { mutableStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000) // 1 second
-            currentImageIndex = (currentImageIndex + 1) % carouselImages.size
-        }
-    }
+  //  LaunchedEffect(Unit) {
+  //      while (true) {
+   //         delay(1000) // 1 second
+   //         currentImageIndex = (currentImageIndex + 1) % carouselImages.size
+     //   }
+  ///  }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Content") },
+                title = { Text("Past Writings") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -59,37 +61,29 @@ fun ViewJournalScreen(
             )
         },
 
-        bottomBar = {
-            NavigationBar(containerColor = Color.LightGray) {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    label = { Text("Home") },
-                    selected = selectedIndex == 0,
-                    onClick = { selectedIndex = 0 }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Favorites") },
-                    label = { Text("Favorites") },
-                    selected = selectedIndex == 1,
-                    onClick = { selectedIndex = 1 }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile") },
-                    selected = selectedIndex == 2,
-                    onClick = { selectedIndex = 2 }
-                )
-            }
-        },
+        //bottomBar = {
+        //    NavigationBar(containerColor = Color.LightGray) {
+        //        NavigationBarItem(
+         //           icon = { Icon(Icons.Default.Edit, contentDescription = "Edit") },
+          //          label = { Text("JOURNAL") },
+           //         selected = selectedIndex == 0,
+           //         onClick = {
+            ///            selectedIndex = 0
+             //           navController.navigate(ROUT_JOURNAL) {
+                //            // Avoid building up a large back stack
+                //            popUpTo(navController.graph.startDestinationId) {
+              //                  saveState = true
+              //              }
+              //              // Prevent multiple copies of the same destination
+               //             launchSingleTop = true
+              //              // Restore state when reselecting a previously selected item
+            //                restoreState = true
+             //           }
+             //       }
+             //   )
+            //}
+       // },
 
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate("upload_content") },
-                containerColor = Color.LightGray
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
-        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -98,25 +92,25 @@ fun ViewJournalScreen(
                 .fillMaxSize()
         ) {
             // Auto-Scrolling Carousel
-            Text(
-                text = "Featured",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
-            )
+       //     Text(
+         //       text = "Featured",
+         //       style = MaterialTheme.typography.titleLarge,
+          //      modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+         //   )
 
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
-                    .padding(bottom = 16.dp),
+                    .height(10.dp)
+                    .padding(bottom = 5.dp),
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                Image(
-                    painter = painterResource(id = carouselImages[currentImageIndex]),
-                    contentDescription = "Carousel Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
+          //      Image(
+           //         painter = painterResource(id = carouselImages[currentImageIndex]),
+           //         contentDescription = "Carousel Image",
+            //        contentScale = ContentScale.Crop,
+             //       modifier = Modifier.fillMaxSize()
+             //   )
             }
 
             // Content Grid Section

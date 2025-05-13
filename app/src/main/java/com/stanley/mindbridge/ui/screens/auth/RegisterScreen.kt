@@ -43,9 +43,9 @@ fun RegisterScreen(
     var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmPasswordVisible by remember { mutableStateOf(false) }
-    var role by remember { mutableStateOf("Who are you") }
+    var role by remember { mutableStateOf("Role") }
     var expanded by remember { mutableStateOf(false) }
-    val roleOptions = listOf("USER", "ADMIN")
+    val roleOptions = listOf("USER")
     val context = LocalContext.current
     val animatedAlpha by animateFloatAsState(
         targetValue = 1f,
@@ -114,7 +114,7 @@ fun RegisterScreen(
                     value = role,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Select Role") },
+                    label = { Text("Role") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
                     colors = outlinedTextFieldColors(),
                     modifier = Modifier
@@ -148,7 +148,7 @@ fun RegisterScreen(
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
-                            if (passwordVisible) Icons.Filled.ThumbUp else Icons.Filled.Check,
+                            if (passwordVisible) Icons.Filled.Close else Icons.Filled.Check,
                             contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
                         )
                     }
@@ -169,7 +169,7 @@ fun RegisterScreen(
                 trailingIcon = {
                     IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
                         Icon(
-                            if (confirmPasswordVisible) Icons.Filled.ThumbUp else Icons.Filled.Check,
+                            if (confirmPasswordVisible) Icons.Filled.Close else Icons.Filled.Check,
                             contentDescription = if (confirmPasswordVisible) "Hide Password" else "Show Password"
                         )
                     }

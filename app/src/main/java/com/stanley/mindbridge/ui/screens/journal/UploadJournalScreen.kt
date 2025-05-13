@@ -2,6 +2,7 @@ package com.stanley.mindbridge.ui.theme.screens.content
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,25 +29,48 @@ fun UploadJournalScreen(
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
+    val context = LocalContext.current
+    var subject by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
+    var appointmentDate by remember { mutableStateOf("") }
+    var isSubmitted by remember { mutableStateOf(false) }
+
+    val isMessageValid = message.trim().isNotEmpty()
+
+    // Load journal if editing
+    LaunchedEffect(editingJournalId) {
+        if (editingJournalId != null) {
+            JournalViewModel.loadJournalById(editingJournalId)
+        }
+    }
+
+    val editingJournal = JournalViewModel.selectedJournal.collectAsState().value
+
+    LaunchedEffect(editingJournal) {
+        editingJournal?.let {
+            message = it.message
+        }
+    }
+
     Scaffold(
-        containerColor = Color(0xFFF5F5F5),
+        containerColor = Color(0xFF004603),
         topBar = {
             TopAppBar(
-                title = { Text("Upload Content") },
+                title = { Text("Upload Journal") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = ROUT_HOME)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF4CAF50),
+                    containerColor = Color(0xFF004603),
                     titleContentColor = Color.White,
                     navigationIconContentColor = Color.White
                 )
             )
         },
         bottomBar = {
-            NavigationBar(containerColor = Color(0xFFE0E0E0)) {
+            NavigationBar(containerColor = Color(0xFF013303)) {
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Home, contentDescription = ROUT_HOME) },
                     label = { Text("Home") },
@@ -59,39 +83,6 @@ fun UploadJournalScreen(
                         }
                     }
                 )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Favorite, contentDescription = "Review") },
-                    label = { Text("Review") },
-                    selected = selectedIndex == 1,
-                    onClick = {
-                        selectedIndex = 1
-                        navController.navigate("favorites") {
-                            popUpTo("home") { inclusive = false }
-                            launchSingleTop = true
-                        }
-                    }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile") },
-                    selected = selectedIndex == 2,
-                    onClick = {
-                        selectedIndex = 2
-                        navController.navigate("profile") {
-                            popUpTo("home") { inclusive = false }
-                            launchSingleTop = true
-                        }
-                    }
-                )
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { /* Add action */ },
-                containerColor = Color(0xFF4CAF50),
-                contentColor = Color.White
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
             }
         },
         content = { paddingValues ->
@@ -102,25 +93,6 @@ fun UploadJournalScreen(
                     .padding(16.dp)
                     .background(Color(0xFFF5F5F5))
             ) {
-                var subject by remember { mutableStateOf("") }
-                var message by remember { mutableStateOf("") }
-                var appointmentDate by remember { mutableStateOf("") }
-
-                LaunchedEffect(editingJournalId) {
-                    if (editingJournalId != null) {
-                        JournalViewModel.loadJournalById(editingJournalId)
-                    }
-                }
-
-                val editingJournal = JournalViewModel.selectedJournal.collectAsState().value
-
-                LaunchedEffect(editingJournal) {
-                    editingJournal?.let {
-                        message = it.message
-
-                    }
-                }
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -148,8 +120,6 @@ fun UploadJournalScreen(
 
                         Spacer(Modifier.height(16.dp))
 
-                        val context = LocalContext.current
-
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -171,8 +141,7 @@ fun UploadJournalScreen(
                                             TimePickerDialog(
                                                 context,
                                                 { _, selectedHour, selectedMinute ->
-                                                    val selectedTime =
-                                                        String.format("%02d:%02d", selectedHour, selectedMinute)
+                                                    val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
                                                     appointmentDate = "$selectedDate $selectedTime"
                                                 },
                                                 hour,
@@ -186,7 +155,7 @@ fun UploadJournalScreen(
                                     ).show()
                                 },
                                 shape = RoundedCornerShape(12.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81C784)),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF004603)),
                                 modifier = Modifier
                                     .height(56.dp)
                                     .weight(0.4f)
@@ -214,22 +183,34 @@ fun UploadJournalScreen(
 
                         Button(
                             onClick = {
-                                val journal = Journal(
-                                    id = editingJournal?.id ?: 0,
-                                    message = message,
-                                    )
-                                if (editingJournal != null) {
-                                    JournalViewModel.update(journal)
-                                } else {
-                                    JournalViewModel.insert(journal)
+                                if (isSubmitted) {
+                                    Toast.makeText(context, "This journal has already been submitted", Toast.LENGTH_SHORT).show()
+                                    return@Button
                                 }
-                                navController.popBackStack()
+
+                                if (isMessageValid) {
+                                    val journal = Journal(
+                                        id = editingJournal?.id ?: 0,
+                                        message = message.trim()
+                                    )
+                                    if (editingJournal != null) {
+                                        JournalViewModel.update(journal)
+                                    } else {
+                                        JournalViewModel.insert(journal)
+                                    }
+
+                                    isSubmitted = true
+                                    navController.popBackStack()
+                                } else {
+                                    Toast.makeText(context, "Message cannot be empty", Toast.LENGTH_SHORT).show()
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF004603)),
+                            enabled = isMessageValid && !isSubmitted
                         ) {
                             Text(
                                 if (editingJournal != null) "Update Content" else "Upload Content",

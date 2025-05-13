@@ -21,6 +21,7 @@ import com.stanley.mindbridge.ui.screens.about.AboutScreen
 import com.stanley.mindbridge.ui.screens.about.AdminDashboardScreen
 import com.stanley.mindbridge.ui.screens.about.HomeScreen
 import com.stanley.mindbridge.ui.screens.auth.RegisterScreen
+import com.stanley.mindbridge.ui.screens.journal.JournalUserViewScreen
 import com.stanley.mindbridge.ui.screens.journal.ViewJournalScreen
 import com.stanley.mindbridge.ui.screens.splash.SplashScreen
 import com.stanley.mindbridge.ui.screens.start.StartScreen
@@ -36,7 +37,7 @@ import com.stanley.mindbridge.viewmodel.JournalViewModel
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = ROUT_JOURNAL
+    startDestination: String = ROUT_SPLASH
 ) {
     val context = LocalContext.current
 
@@ -96,6 +97,12 @@ fun AppNavHost(
         }
         composable(ROUT_JOURNALVIEW) {
             ViewJournalScreen(navController, journalViewModel) { id ->
+                navController.navigate("upload_task?id=$id")
+            }
+
+        }
+        composable(ROUT_JOURNAUSERLVIEW) {
+            JournalUserViewScreen(navController, journalViewModel) { id ->
                 navController.navigate("upload_task?id=$id")
             }
 
