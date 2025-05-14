@@ -28,6 +28,28 @@ fun UploadAppointmentScreen(
 ) {
     var selectedIndex by remember { mutableStateOf(0) }
 
+    var subject by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
+    var appointmentDate by remember { mutableStateOf("") }
+
+    LaunchedEffect(editingContentId) {
+        if (editingContentId != null) {
+            contentViewModel.loadContactById(editingContentId)
+        }
+    }
+
+    val editingContent = contentViewModel.selectedContact.collectAsState().value
+
+    LaunchedEffect(editingContent) {
+        editingContent?.let {
+            subject = it.subject
+            message = it.message
+            appointmentDate = it.appointmentDate
+        }
+    }
+
+    val isFormValid = subject.isNotBlank() && message.isNotBlank() && appointmentDate.isNotBlank()
+
     Scaffold(
         containerColor = Color(0xFFF5F5F5),
         topBar = {
@@ -59,41 +81,8 @@ fun UploadAppointmentScreen(
                         }
                     }
                 )
-              //  NavigationBarItem(
-               //     icon = { Icon(Icons.Default.Favorite, contentDescription = "Review") },
-                //    label = { Text("Review") },
-                 //   selected = selectedIndex == 1,
-                //    onClick = {
-                 //       selectedIndex = 1
-                  //      navController.navigate("favorites") {
-                 //           popUpTo("home") { inclusive = false }
-                  //          launchSingleTop = true
-                   //     }
-                 //   }
-               // )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile") },
-                    selected = selectedIndex == 2,
-                    onClick = {
-                        selectedIndex = 2
-                        navController.navigate("profile") {
-                            popUpTo("home") { inclusive = false }
-                            launchSingleTop = true
-                        }
-                    }
-                )
             }
         },
-       // floatingActionButton = {
-         //   FloatingActionButton(
-         //       onClick = { /* Add action */ },
-         //       containerColor = Color(0xFF4CAF50),
-         //       contentColor = Color.White
-        //    ) {
-        //        Icon(Icons.Default.Add, contentDescription = "Add")
-        //    }
-      //  },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -102,26 +91,6 @@ fun UploadAppointmentScreen(
                     .padding(16.dp)
                     .background(Color(0xFFF5F5F5))
             ) {
-                var subject by remember { mutableStateOf("") }
-                var message by remember { mutableStateOf("") }
-                var appointmentDate by remember { mutableStateOf("") }
-
-                LaunchedEffect(editingContentId) {
-                    if (editingContentId != null) {
-                        contentViewModel.loadContactById(editingContentId)
-                    }
-                }
-
-                val editingContent = contentViewModel.selectedContact.collectAsState().value
-
-                LaunchedEffect(editingContent) {
-                    editingContent?.let {
-                        subject = it.subject
-                        message = it.message
-                        appointmentDate = it.appointmentDate
-                    }
-                }
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -132,7 +101,7 @@ fun UploadAppointmentScreen(
                         OutlinedTextField(
                             value = subject,
                             onValueChange = { subject = it },
-                            label = { Text("Title") },
+                            label = { Text("Patient Name") },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(8.dp)
                         )
@@ -142,7 +111,7 @@ fun UploadAppointmentScreen(
                         OutlinedTextField(
                             value = message,
                             onValueChange = { message = it },
-                            label = { Text("Description") },
+                            label = { Text("How may we help?") },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(8.dp)
                         )
@@ -228,11 +197,14 @@ fun UploadAppointmentScreen(
                                 }
                                 navController.popBackStack()
                             },
+                            enabled = isFormValid,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isFormValid) Color(0xFF4CAF50) else Color(0xFFBDBDBD)
+                            )
                         ) {
                             Text(
                                 if (editingContent != null) "Update Content" else "Upload Content",

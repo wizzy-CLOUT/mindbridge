@@ -9,4 +9,5 @@ data class Journal(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val message: String,
 
+
 )

@@ -66,32 +66,20 @@ fun ViewContentScreen(
             )
         },
 
-        bottomBar = {
-            NavigationBar(containerColor = Color.LightGray) {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    label = { Text("Home") },
-                    selected = selectedIndex == 0,
-                    onClick = { selectedIndex = 0 }
-                )
+        //bottomBar = {
+        // //   NavigationBar(containerColor = Color.LightGray) {
+         ///       NavigationBarItem(
+         //           icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+          //          label = { Text("ADM Dash") },
+           //         selected = selectedIndex == 0,
+           //         onClick = { selectedIndex = 0 }
+             //   )
 
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-                    label = { Text("Profile") },
-                    selected = selectedIndex == 2,
-                    onClick = { selectedIndex = 2 }
-                )
-            }
-        },
 
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate("upload_content") },
-                containerColor = Color.LightGray
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
-        }
+          //  }
+       // },
+
+
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -147,7 +135,7 @@ fun ViewContentScreen(
                         ) {
                             Column {
                                 Text(
-                                    text = "Subject: ${contact.subject}",
+                                    text = "Patient Name: ${contact.subject}",
                                     style = MaterialTheme.typography.titleMedium
                                 )
                                 Text(

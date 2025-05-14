@@ -116,13 +116,13 @@ fun HomeScreen(navController: NavController) {
                     HomeActionButton("Journaling", Icons.Default.Edit) {
                         navController.navigate(ROUT_JOURNAL) // <-- Replace with your actual route
                     }
-                    HomeActionButton("Mood Tracker", Icons.Default.Face) {
-                        navController.navigate(ROUT_TRACKER) // <-- Replace with your actual route
-                    }
+                   // HomeActionButton("Mood Tracker", Icons.Default.Face) {
+                     //   navController.navigate(ROUT_TRACKER) // <-- Replace with your actual route
+                   // }
                     HomeActionButton("Make Appointment", Icons.AutoMirrored.Filled.Send) {
                         navController.navigate(ROUT_APPOINTMENT) // <-- Replace with your actual route
                     }
-                    HomeActionButton("Past Journals", Icons.Default.Refresh) {
+                    HomeActionButton(" View Past Journals", Icons.Default.Refresh) {
                         navController.navigate(ROUT_JOURNALVIEW) // <-- Replace with your actual route
                     }
                 }

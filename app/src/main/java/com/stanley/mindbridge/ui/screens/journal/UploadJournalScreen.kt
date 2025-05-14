@@ -100,13 +100,7 @@ fun UploadJournalScreen(
                     colors = CardDefaults.cardColors(containerColor = Color.White)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        OutlinedTextField(
-                            value = subject,
-                            onValueChange = { subject = it },
-                            label = { Text("Title") },
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp)
-                        )
+
 
                         Spacer(Modifier.height(12.dp))
 
