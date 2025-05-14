@@ -61,7 +61,7 @@ fun UploadAppointmentScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF4CAF50),
+                    containerColor = Color(0xFF004603),
                     titleContentColor = Color.White,
                     navigationIconContentColor = Color.White
                 )
@@ -156,7 +156,7 @@ fun UploadAppointmentScreen(
                                     ).show()
                                 },
                                 shape = RoundedCornerShape(12.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF81C784)),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF004603)),
                                 modifier = Modifier
                                     .height(56.dp)
                                     .weight(0.4f)
@@ -203,7 +203,7 @@ fun UploadAppointmentScreen(
                                 .height(50.dp),
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isFormValid) Color(0xFF4CAF50) else Color(0xFFBDBDBD)
+                                containerColor = if (isFormValid) Color(0xFF4CAF50) else Color(0xFF004603)
                             )
                         ) {
                             Text(

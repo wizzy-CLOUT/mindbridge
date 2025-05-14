@@ -145,6 +145,7 @@ fun ViewJournalScreen(
                                     maxLines = 3 // 👈 optional: keep things neat
                                 )
 
+
                             }
                         }
                     }

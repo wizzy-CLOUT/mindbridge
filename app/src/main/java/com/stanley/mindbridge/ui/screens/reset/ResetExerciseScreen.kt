@@ -38,13 +38,13 @@ fun BreathingExerciseScreen(navController: NavHostController) {
     LaunchedEffect(Unit) {
         while (true) {
             phase = "Breathe In"
-            delay(4000)
+            delay(5000)
             phase = "Hold"
-            delay(2000)
+            delay(2500)
             phase = "Breathe Out"
-            delay(4000)
+            delay(5000)
             phase = "Hold"
-            delay(2000)
+            delay(2500)
         }
     }
 

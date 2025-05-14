@@ -70,7 +70,7 @@ fun UploadJournalScreen(
             )
         },
         bottomBar = {
-            NavigationBar(containerColor = Color(0xFF013303)) {
+            NavigationBar(containerColor = Color(0xFFE0E0E0)) {
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Home, contentDescription = ROUT_HOME) },
                     label = { Text("Home") },
@@ -186,6 +186,7 @@ fun UploadJournalScreen(
                                     val journal = Journal(
                                         id = editingJournal?.id ?: 0,
                                         message = message.trim()
+
                                     )
                                     if (editingJournal != null) {
                                         JournalViewModel.update(journal)
